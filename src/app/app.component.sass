@@ -1,0 +1,20 @@
+.container
+  height: 100vh
+  box-sizing: border-box
+  display: grid
+  grid-template-rows: 64px auto
+
+  .body
+    height: calc( 100% - 24px)
+    padding: 12px
+    display: grid
+    grid-template-rows: 1fr 1fr
+    grid-template-columns: 1fr
+    grid-template-areas: "humans" "transformers"
+
+.humans
+  grid-area: humans
+
+.transformers
+  grid-area: transformers
+
