@@ -66,7 +66,7 @@ export class FirebaseService {
   //#endregion TRANSFORMERS
 
   //#region HELPER FUNCTIONS
-  private addId(actor: ITransformer | IHuman): ITransformer | IHuman {
+  public addId(actor: ITransformer | IHuman): ITransformer | IHuman {
     if (!actor.id) {
       actor.id = this._afs.createId();
     }

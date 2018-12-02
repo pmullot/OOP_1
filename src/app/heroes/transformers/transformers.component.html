@@ -1,3 +1,56 @@
-<p>
-  transformers works!
-</p>
+<div class="container">
+  <div class="list">
+    <mat-toolbar color="accent">
+      <mat-toolbar-row>
+        <span>Transformers</span> <span class="toolbar-spacer"></span>
+        <button mat-mini-fab color="primary" (click)="createNew()"><mat-icon>add</mat-icon></button>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-action-list *ngFor="let hero of (heroes$ | async)">
+      <button mat-list-item class="mat-elevation-z2" (click)="selectHero(hero)">
+        <img matListAvatar src="{{hero.photo}}" alt="..." />
+        <h3 matLine>{{ hero.name }}</h3>
+      </button>
+    </mat-action-list>
+  </div>
+  <mat-card class="form" *ngIf="selectedHero.value as hero">
+    <mat-card-header>
+      <img mat-card-avatar src="{{hero?.photo}}" />
+      <mat-card-title>{{ hero.name }}</mat-card-title>
+      <mat-card-subtitle>{{ hero.clan }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="form">
+      <form class="" [formGroup]="transformerForm">
+        <mat-form-field class="name">
+          <input matInput type="text" placeholder="Name" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field class="wheels">
+          <input matInput type="number" placeholder="Wheels" formControlName="wheels" />
+        </mat-form-field>
+        <mat-form-field class="wings">
+          <input matInput type="number" placeholder="Wings" formControlName="wings" />
+        </mat-form-field>
+        <mat-form-field clas="clan">
+          <mat-select placeholder="Clan" formControlName="clan">
+            <mat-option value="autobot">Autobot</mat-option>
+            <mat-option value="decepticon">Decepticon</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="photo">
+          <input matInput type="url" placeholder="Photo url" formControlName="photo" />
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button [disabled]="transformerForm.pristine" (click)="cancel()">Reset</button>
+      <button
+        mat-raised-button
+        [disabled]="transformerForm.invalid || transformerForm.pristine"
+        color="warn"
+        (click)="save(transformerForm.value)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

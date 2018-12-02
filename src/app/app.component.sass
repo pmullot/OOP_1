@@ -8,13 +8,17 @@
     height: calc( 100% - 24px)
     padding: 12px
     display: grid
-    grid-template-rows: 1fr 1fr
+    grid-template-rows: 1fr 10px 1fr
     grid-template-columns: 1fr
-    grid-template-areas: "humans" "transformers"
+    grid-template-areas: "humans" "divider" "transformers"
 
 .humans
   grid-area: humans
 
 .transformers
   grid-area: transformers
+
+.divider
+  grid-area: divider
+  margin: 0 !important
 

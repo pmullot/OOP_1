@@ -1,15 +1,24 @@
-import { Observable } from 'rxjs';
+import { OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { FirebaseService } from '../firebase.service';
 import { IHero } from '../models/hero.model';
 import { IHuman } from '../models/humans.model';
 import { ITransformer } from '../models/transformers.model';
 
-export class Persister {
+export class Persister implements OnDestroy {
   public heroes$: Observable<ITransformer[] | IHuman[]>;
-  public selectedHero$: Observable<ITransformer | IHuman>;
+  public selectedHero: BehaviorSubject<ITransformer | IHuman> = new BehaviorSubject(null);
+
+  protected getOneSub: Subscription;
 
   constructor(protected fb: FirebaseService, protected race: 'Transformer' | 'Human') {
     this.heroes$ = this.race === 'Transformer' ? this.fb.getTransformers$() : this.fb.getHumans$();
+  }
+
+  ngOnDestroy(): void {
+    if (this.getOneSub && !this.getOneSub.closed) {
+      this.getOneSub.unsubscribe();
+    }
   }
 
   public delete(actor: ITransformer | IHuman): Promise<void> {
@@ -33,6 +42,6 @@ export class Persister {
   }
 
   public selectHero(hero: IHero): void {
-    this.selectedHero$ = this.getOne$(hero.id);
+    this.getOneSub = this.getOne$(hero.id).subscribe(h => this.selectedHero.next(h));
   }
 }

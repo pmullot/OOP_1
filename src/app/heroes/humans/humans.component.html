@@ -1,6 +1,11 @@
 <div class="container">
   <div class="list">
-    <mat-toolbar color="accent">Humans</mat-toolbar>
+    <mat-toolbar color="accent">
+      <mat-toolbar-row>
+        <span>Humans</span> <span class="toolbar-spacer"></span>
+        <button mat-mini-fab color="primary" (click)="createNew()"><mat-icon>add</mat-icon></button>
+      </mat-toolbar-row></mat-toolbar
+    >
     <mat-action-list *ngFor="let hero of (heroes$ | async)">
       <button mat-list-item class="mat-elevation-z2" (click)="selectHero(hero)">
         <img matListAvatar src="{{hero.photo}}" alt="..." />
@@ -8,20 +13,46 @@
       </button>
     </mat-action-list>
   </div>
-  <mat-card class="form" *ngIf="(selectedHero$ | async) as hero">
+  <mat-card class="form" *ngIf="selectedHero.value as hero">
     <mat-card-header>
       <img mat-card-avatar src="{{hero?.photo}}" />
       <mat-card-title>{{ hero.name }}</mat-card-title>
       <mat-card-subtitle>{{ hero.age }} years old</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form class="">
-        <mat-form-field class=""> <input matInput type="text" placeholder="Name" /> </mat-form-field>
-        <mat-form-field class=""> <input matInput type="number" placeholder="Age" /> </mat-form-field>
-        <mat-slider tickInterval="5" max="100" min="0" step="5"></mat-slider>
-        <span>Male<mat-slide-toggle>Female</mat-slide-toggle></span>
+      <form class="" [formGroup]="humanForm">
+        <mat-form-field class="">
+          <input matInput type="text" placeholder="Name" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field class="">
+          <input matInput type="number" placeholder="Age" formControlName="age" />
+        </mat-form-field>
+        <span style="width:100%">
+          Health
+          <mat-slider thumbLabel tickInterval="5" max="100" min="0" step="5" formControlName="health"></mat-slider
+        ></span>
+        <div class="sex">
+          Sex
+          <mat-radio-group formControlName="sex">
+            <mat-radio-button value="Male">Dude</mat-radio-button>
+            <mat-radio-button value="Female">Gal</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <mat-form-field class="">
+          <input matInput type="url" placeholder="Photo url" formControlName="photo" />
+        </mat-form-field>
       </form>
     </mat-card-content>
-    <mat-card-actions> <button mat-raised-button color="primary">Save</button> </mat-card-actions>
+    <mat-card-actions>
+      <button mat-raised-button [disabled]="humanForm.pristine" (click)="cancel()">Reset</button>
+      <button
+        mat-raised-button
+        [disabled]="humanForm.invalid || humanForm.pristine"
+        color="warn"
+        (click)="save(humanForm.value)"
+      >
+        Save
+      </button>
+    </mat-card-actions>
   </mat-card>
 </div>

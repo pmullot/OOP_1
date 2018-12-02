@@ -13,10 +13,26 @@
 .form
   width: 650px
   grid-area: form
+  max-height: 300px
 
   form
     display: grid
-    grid-gap: 24px
+    grid-gap: 0 24px
     grid-template-columns: 2fr 1fr
     grid-template-rows: 1fr 1fr 1fr
 
+    mat-slider
+      width: 100%
+
+    mat-card-header
+      background-scolor: grey
+
+    .sex
+      display: block
+
+      mat-radio-group
+        display: flex
+        flex-direction: column
+
+mat-card-actions
+  text-align: right
